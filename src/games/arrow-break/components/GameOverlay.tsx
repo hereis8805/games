@@ -51,11 +51,13 @@ function GameOverOverlay({
   onRestart,
   onRegister,
   onLeaderboard,
+  onHome,
   onHub,
 }: {
   onRestart:     () => void;
   onRegister:    () => void;
   onLeaderboard: () => void;
+  onHome:        () => void;
   onHub:         () => void;
 }) {
   const score     = useGameStore(s => s.score);
@@ -112,9 +114,14 @@ function GameOverOverlay({
           <Text style={styles.restartText}>RESTART</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.hubBtn} onPress={onHub} activeOpacity={0.8}>
-          <Text style={styles.hubText}>← 허브로</Text>
-        </TouchableOpacity>
+        <View style={styles.navRow}>
+          <TouchableOpacity style={styles.navBtn} onPress={onHome} activeOpacity={0.8}>
+            <Text style={styles.navText}>홈</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navBtn} onPress={onHub} activeOpacity={0.8}>
+            <Text style={styles.navText}>← 허브</Text>
+          </TouchableOpacity>
+        </View>
       </Animated.View>
     </View>
   );
@@ -125,10 +132,11 @@ interface Props {
   onRestart:     () => void;
   onRegister:    () => void;
   onLeaderboard: () => void;
+  onHome:        () => void;
   onHub:         () => void;
 }
 
-export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHub }: Props) {
+export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHome, onHub }: Props) {
   const status = useGameStore(s => s.status);
 
   if (status === 'countdown') return <CountdownOverlay />;
@@ -138,6 +146,7 @@ export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHu
         onRestart={onRestart}
         onRegister={onRegister}
         onLeaderboard={onLeaderboard}
+        onHome={onHome}
         onHub={onHub}
       />
     );
@@ -262,11 +271,18 @@ const styles = StyleSheet.create({
     color:         '#fff',
     letterSpacing: 2,
   },
-  hubBtn: {
-    marginTop:     6,
-    paddingVertical: 10,
+  navRow: {
+    flexDirection:  'row',
+    gap:            10,
+    marginTop:       6,
+    width:          '100%',
   },
-  hubText: {
+  navBtn: {
+    flex:            1,
+    paddingVertical: 10,
+    alignItems:      'center',
+  },
+  navText: {
     fontSize:   14,
     color:      COLORS.subText,
     fontWeight: '600',

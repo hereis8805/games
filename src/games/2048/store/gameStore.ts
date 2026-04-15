@@ -43,6 +43,7 @@ interface GameState {
   startGame: () => void;
   move: (dir: Direction) => void;
   continueAfterWin: () => void;
+  goHome: () => void;
   _initBest: () => void;
 }
 
@@ -85,4 +86,6 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   continueAfterWin: () => set({ status: 'playing' }),
+
+  goHome: () => set({ status: 'idle', score: 0, board: initBoard() }),
 }));

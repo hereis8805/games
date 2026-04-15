@@ -21,7 +21,7 @@ export default function GameArrowBreak() {
   const {
     queue, status, score, level,
     startCountdown, countdownTick,
-    pressDirection, energyTick, levelTick,
+    pressDirection, energyTick, levelTick, goHome,
   } = useGameStore();
 
   const [activeDir,   setActiveDir]   = useState<Direction | null>(null);
@@ -113,6 +113,7 @@ export default function GameArrowBreak() {
         onRestart={() => { setOverlay('none'); setSubmittedId(undefined); startCountdown(); }}
         onRegister={() => setOverlay('nickname')}
         onLeaderboard={() => { setSubmittedId(undefined); setOverlay('leaderboard'); }}
+        onHome={() => { setOverlay('none'); setSubmittedId(undefined); goHome(); }}
         onHub={() => router.back()}
       />
 

@@ -57,6 +57,7 @@ interface GameState {
   pressDirection:  (dir: Direction) => void;
   energyTick:      () => void;   // 100ms마다 App.tsx에서 호출
   levelTick:       () => void;   // 5000ms마다 App.tsx에서 호출
+  goHome:          () => void;   // 게임 홈(idle)으로 복귀
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -170,5 +171,20 @@ export const useGameStore = create<GameState>((set, get) => ({
     const { status } = get();
     if (status !== 'playing') return;
     set((s) => ({ level: s.level + 1 }));
+  },
+
+  // ── 게임 홈(idle)으로 복귀 ────────────────────────────────────────────
+  goHome: () => {
+    set({
+      status:     'idle',
+      score:      0,
+      level:      1,
+      energy:     MAX_ENERGY,
+      combo:      0,
+      countdown:  3,
+      lastAction: null,
+      actionSeq:  0,
+      queue:      initQueue(QUEUE_SIZE),
+    });
   },
 }));
