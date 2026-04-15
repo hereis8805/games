@@ -31,7 +31,6 @@ function GameOverCard({
   onLeaderboard,
   onRestart,
   onHome,
-  onHub,
 }: {
   score:         number;
   bestScore:     number;
@@ -39,7 +38,6 @@ function GameOverCard({
   onLeaderboard: () => void;
   onRestart:     () => void;
   onHome:        () => void;
-  onHub:         () => void;
 }) {
   const cardScale = useSharedValue(0.75);
   useEffect(() => {
@@ -85,15 +83,9 @@ function GameOverCard({
           <Text style={styles.restartText}>다시하기</Text>
         </TouchableOpacity>
 
-        {/* 홈 + 허브 */}
-        <View style={styles.navRow}>
-          <TouchableOpacity style={styles.navBtn} onPress={onHome} activeOpacity={0.8}>
-            <Text style={styles.navText}>홈</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navBtn} onPress={onHub} activeOpacity={0.8}>
-            <Text style={styles.navText}>← 허브</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.navBtn} onPress={onHome} activeOpacity={0.8}>
+          <Text style={styles.navText}>홈</Text>
+        </TouchableOpacity>
       </Animated.View>
     </View>
   );
@@ -190,7 +182,6 @@ export default function Game2048() {
           onLeaderboard={() => { setSubmittedId(undefined); setOverlay('leaderboard'); }}
           onRestart={handleNewGame}
           onHome={() => goHome()}
-          onHub={() => router.back()}
         />
       )}
 
@@ -204,7 +195,7 @@ export default function Game2048() {
       {overlay === 'leaderboard' && (
         <Leaderboard
           highlightId={submittedId}
-          onClose={() => setOverlay('none')}
+          onClose={() => { setOverlay('none'); goHome(); }}
         />
       )}
     </View>
