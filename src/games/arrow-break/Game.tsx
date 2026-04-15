@@ -91,7 +91,7 @@ export default function GameArrowBreak() {
         </TouchableOpacity>
 
         {overlay === 'leaderboard' && (
-          <Leaderboard onClose={() => setOverlay('none')} onHub={() => router.back()} />
+          <Leaderboard onClose={() => setOverlay('none')} onHome={() => setOverlay('none')} />
         )}
       </View>
     );
@@ -129,7 +129,7 @@ export default function GameArrowBreak() {
         <Leaderboard
           highlightId={submittedId}
           onClose={() => setOverlay('none')}
-          onHub={() => router.back()}
+          onHome={() => { setOverlay('none'); setSubmittedId(undefined); goHome(); }}
         />
       )}
     </View>
