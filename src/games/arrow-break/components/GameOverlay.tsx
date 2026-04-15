@@ -52,13 +52,11 @@ function GameOverOverlay({
   onRegister,
   onLeaderboard,
   onHome,
-  onHub,
 }: {
   onRestart:     () => void;
   onRegister:    () => void;
   onLeaderboard: () => void;
   onHome:        () => void;
-  onHub:         () => void;
 }) {
   const score     = useGameStore(s => s.score);
   const bestScore = useGameStore(s => s.bestScore);
@@ -114,14 +112,9 @@ function GameOverOverlay({
           <Text style={styles.restartText}>RESTART</Text>
         </TouchableOpacity>
 
-        <View style={styles.navRow}>
-          <TouchableOpacity style={styles.navBtn} onPress={onHome} activeOpacity={0.8}>
-            <Text style={styles.navText}>홈</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navBtn} onPress={onHub} activeOpacity={0.8}>
-            <Text style={styles.navText}>← 허브</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.navBtn} onPress={onHome} activeOpacity={0.8}>
+          <Text style={styles.navText}>홈</Text>
+        </TouchableOpacity>
       </Animated.View>
     </View>
   );
@@ -133,10 +126,9 @@ interface Props {
   onRegister:    () => void;
   onLeaderboard: () => void;
   onHome:        () => void;
-  onHub:         () => void;
 }
 
-export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHome, onHub }: Props) {
+export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHome }: Props) {
   const status = useGameStore(s => s.status);
 
   if (status === 'countdown') return <CountdownOverlay />;
@@ -147,7 +139,6 @@ export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHo
         onRegister={onRegister}
         onLeaderboard={onLeaderboard}
         onHome={onHome}
-        onHub={onHub}
       />
     );
   }

@@ -114,7 +114,6 @@ export default function GameArrowBreak() {
         onRegister={() => setOverlay('nickname')}
         onLeaderboard={() => { setSubmittedId(undefined); setOverlay('leaderboard'); }}
         onHome={() => { setOverlay('none'); setSubmittedId(undefined); goHome(); }}
-        onHub={() => router.back()}
       />
 
       {overlay === 'nickname' && status === 'over' && (
@@ -128,7 +127,7 @@ export default function GameArrowBreak() {
       {overlay === 'leaderboard' && (
         <Leaderboard
           highlightId={submittedId}
-          onClose={() => setOverlay('none')}
+          onClose={() => { setOverlay('none'); setSubmittedId(undefined); goHome(); }}
           onHome={() => { setOverlay('none'); setSubmittedId(undefined); goHome(); }}
         />
       )}
