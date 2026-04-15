@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Game Hub",
+    "slug": "game-hub",
+    "scheme": "game-hub",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "ios": { "supportsTablet": false },
+    "android": { "adaptiveIcon": { "backgroundColor": "#0f0e17" } },
+    "plugins": ["expo-router"]
+  }
+}
