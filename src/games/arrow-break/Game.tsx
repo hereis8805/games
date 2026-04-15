@@ -91,7 +91,7 @@ export default function GameArrowBreak() {
         </TouchableOpacity>
 
         {overlay === 'leaderboard' && (
-          <Leaderboard onClose={() => setOverlay('none')} />
+          <Leaderboard onClose={() => setOverlay('none')} onHub={() => router.back()} />
         )}
       </View>
     );
@@ -113,6 +113,7 @@ export default function GameArrowBreak() {
         onRestart={() => { setOverlay('none'); setSubmittedId(undefined); startCountdown(); }}
         onRegister={() => setOverlay('nickname')}
         onLeaderboard={() => { setSubmittedId(undefined); setOverlay('leaderboard'); }}
+        onHub={() => router.back()}
       />
 
       {overlay === 'nickname' && status === 'over' && (
@@ -127,6 +128,7 @@ export default function GameArrowBreak() {
         <Leaderboard
           highlightId={submittedId}
           onClose={() => setOverlay('none')}
+          onHub={() => router.back()}
         />
       )}
     </View>

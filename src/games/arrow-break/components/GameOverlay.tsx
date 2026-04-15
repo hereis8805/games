@@ -51,10 +51,12 @@ function GameOverOverlay({
   onRestart,
   onRegister,
   onLeaderboard,
+  onHub,
 }: {
   onRestart:     () => void;
   onRegister:    () => void;
   onLeaderboard: () => void;
+  onHub:         () => void;
 }) {
   const score     = useGameStore(s => s.score);
   const bestScore = useGameStore(s => s.bestScore);
@@ -109,6 +111,10 @@ function GameOverOverlay({
         <TouchableOpacity style={styles.restartBtn} onPress={onRestart} activeOpacity={0.8}>
           <Text style={styles.restartText}>RESTART</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.hubBtn} onPress={onHub} activeOpacity={0.8}>
+          <Text style={styles.hubText}>← 허브로</Text>
+        </TouchableOpacity>
       </Animated.View>
     </View>
   );
@@ -119,9 +125,10 @@ interface Props {
   onRestart:     () => void;
   onRegister:    () => void;
   onLeaderboard: () => void;
+  onHub:         () => void;
 }
 
-export default function GameOverlay({ onRestart, onRegister, onLeaderboard }: Props) {
+export default function GameOverlay({ onRestart, onRegister, onLeaderboard, onHub }: Props) {
   const status = useGameStore(s => s.status);
 
   if (status === 'countdown') return <CountdownOverlay />;
@@ -131,6 +138,7 @@ export default function GameOverlay({ onRestart, onRegister, onLeaderboard }: Pr
         onRestart={onRestart}
         onRegister={onRegister}
         onLeaderboard={onLeaderboard}
+        onHub={onHub}
       />
     );
   }
@@ -253,5 +261,14 @@ const styles = StyleSheet.create({
     fontWeight:    '800',
     color:         '#fff',
     letterSpacing: 2,
+  },
+  hubBtn: {
+    marginTop:     6,
+    paddingVertical: 10,
+  },
+  hubText: {
+    fontSize:   14,
+    color:      COLORS.subText,
+    fontWeight: '600',
   },
 });

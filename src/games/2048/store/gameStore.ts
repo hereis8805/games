@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { Platform } from 'react-native';
 import { Board, Direction, addRandomTile, initBoard, isGameOver, hasWon, slideBoard } from '../logic/board';
 
-type Status = 'playing' | 'won' | 'over';
+type Status = 'idle' | 'playing' | 'won' | 'over';
 
 const BEST_KEY = '2048-best';
 
@@ -50,7 +50,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   board: initBoard(),
   score: 0,
   bestScore: loadBest(),
-  status: 'playing',
+  status: 'idle',
 
   // 네이티브 앱 마운트 시 한 번만 호출
   _initBest: async () => {
@@ -66,7 +66,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   move: (dir: Direction) => {
     const { board, score, bestScore, status } = get();
-    if (status === 'over') return;
+    if (status === 'idle' || status === 'over') return;
 
     const [newBoard, gained, changed] = slideBoard(board, dir);
     if (!changed) return;
