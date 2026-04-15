@@ -25,7 +25,6 @@ const PREVIEW_TILES = [
 
 // ── 게임 오버 카드 ──────────────────────────────────────────────────────────
 function GameOverCard({
-  status,
   score,
   bestScore,
   onRegister,
@@ -34,7 +33,6 @@ function GameOverCard({
   onHome,
   onHub,
 }: {
-  status:        'over' | 'won';
   score:         number;
   bestScore:     number;
   onRegister:    () => void;
@@ -53,9 +51,7 @@ function GameOverCard({
   return (
     <View style={styles.overlay}>
       <Animated.View style={[styles.card, cardStyle]}>
-        <Text style={styles.overTitle}>
-          {status === 'won' ? 'YOU WIN!' : 'GAME OVER'}
-        </Text>
+        <Text style={styles.overTitle}>GAME OVER</Text>
 
         {isNewBest && (
           <Animated.Text entering={FadeIn.duration(600).delay(300)} style={styles.newBest}>
@@ -180,15 +176,14 @@ export default function Game2048() {
         bestScore={bestScore}
         onNewGame={handleNewGame}
         onLeaderboard={() => setOverlay('leaderboard')}
-        onBack={() => router.back()}
+        onBack={() => goHome()}
       />
       <Board board={board} onSwipe={handleMove} />
       <DirectionPad activeDir={activeDir} onPress={handleMove} />
 
       {/* 게임 오버 / 승리 카드 */}
-      {(status === 'over' || status === 'won') && overlay === 'none' && (
+      {status === 'over' && overlay === 'none' && (
         <GameOverCard
-          status={status}
           score={score}
           bestScore={bestScore}
           onRegister={() => setOverlay('nickname')}

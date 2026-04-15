@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { Platform } from 'react-native';
-import { Board, Direction, addRandomTile, initBoard, isGameOver, hasWon, slideBoard } from '../logic/board';
+import { Board, Direction, addRandomTile, initBoard, isGameOver, slideBoard } from '../logic/board';
 
-type Status = 'idle' | 'playing' | 'won' | 'over';
+type Status = 'idle' | 'playing' | 'over';
 
 const BEST_KEY = '2048-best';
 
@@ -42,7 +42,6 @@ interface GameState {
   status: Status;
   startGame: () => void;
   move: (dir: Direction) => void;
-  continueAfterWin: () => void;
   goHome: () => void;
   _initBest: () => void;
 }
@@ -67,7 +66,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   move: (dir: Direction) => {
     const { board, score, bestScore, status } = get();
-    if (status === 'idle' || status === 'over') return;
+    if (status !== 'playing') return;
 
     const [newBoard, gained, changed] = slideBoard(board, dir);
     if (!changed) return;
@@ -78,14 +77,10 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     if (newBest > bestScore) saveBest(newBest);
 
-    let newStatus: Status = 'playing';
-    if (status !== 'won' && hasWon(withTile)) newStatus = 'won';
-    else if (isGameOver(withTile)) newStatus = 'over';
+    const newStatus: Status = isGameOver(withTile) ? 'over' : 'playing';
 
     set({ board: withTile, score: newScore, bestScore: newBest, status: newStatus });
   },
-
-  continueAfterWin: () => set({ status: 'playing' }),
 
   goHome: () => set({ status: 'idle', score: 0, board: initBoard() }),
 }));
