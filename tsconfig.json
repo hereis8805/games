@@ -3,7 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*":                    ["./src/*"],
+      "@game/2048":             ["./packages/game-2048"],
+      "@game/arrow-break":      ["./packages/game-arrow-break"],
+      "@game/yellow-remember":  ["./packages/game-yellow-remember"]
     }
   }
 }

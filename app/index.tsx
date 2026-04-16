@@ -40,6 +40,14 @@ const GAMES: GameCard[] = [
     accentColor: '#e94560',
     route:       '/arrow-break',
   },
+  {
+    id:          'yellow-remember',
+    title:       'Yellow Remember',
+    description: '노란 블럭이 사라지기 전에 위치를 기억하세요.\n3×3부터 6×6까지 점점 어려워져요!',
+    emoji:       '💛',
+    accentColor: '#ffe066',
+    route:       '/yellow-remember',
+  },
 ];
 
 function GameCardItem({ game }: { game: GameCard }) {

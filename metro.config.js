@@ -14,8 +14,9 @@ config.resolver.nodeModulesPaths = [
 ];
 
 config.resolver.extraNodeModules = {
-  '@game/2048':        path.resolve(projectRoot, 'packages/game-2048'),
-  '@game/arrow-break': path.resolve(projectRoot, 'packages/game-arrow-break'),
+  '@game/2048':             path.resolve(projectRoot, 'packages/game-2048'),
+  '@game/arrow-break':      path.resolve(projectRoot, 'packages/game-arrow-break'),
+  '@game/yellow-remember':  path.resolve(projectRoot, 'packages/game-yellow-remember'),
 };
 
 module.exports = config;
