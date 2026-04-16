@@ -43,7 +43,7 @@ const GAMES: GameCard[] = [
   {
     id:          'yellow-remember',
     title:       'Yellow Remember',
-    description: '노란 블럭이 사라지기 전에 위치를 기억하세요.\n3×3부터 6×6까지 점점 어려워져요!',
+    description: '번호 순서를 기억하고 도전 버튼을 눌러보세요!\n빠를수록 보너스 점수가 올라가요.',
     emoji:       '💛',
     accentColor: '#ffe066',
     route:       '/yellow-remember',
