@@ -17,4 +17,4 @@ export const COMBO_MULTIPLIERS   = [1.0, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5]; // index
 export const SCORE_BASE          = 100;   // 블럭 1개 기본 점수
 
 // 블럭 큐
-export const QUEUE_SIZE          = 5;     // 화면에 보이는 최대 블럭 수
+export const QUEUE_SIZE          = 4;     // 화면에 보이는 최대 블럭 수

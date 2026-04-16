@@ -40,7 +40,7 @@ export const COLORS = {
   overlay:      'rgba(0,0,0,0.75)',
 };
 
-export const BLOCK_SIZE  = 64;
+export const BLOCK_SIZE  = 54;
 export const BLOCK_GAP   = 8;
 export const LANE_PADDING = 12;
 export const MAX_VISIBLE  = 5;
