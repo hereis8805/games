@@ -12,6 +12,7 @@ export const ENERGY_WRONG        = 10;     // 오답 시 차감량
 // 콤보 관련
 export const COMBO_CAP_AT        = 6;      // 이 콤보 이상이면 에너지 게인 캡
 export const COMBO_MULTIPLIERS   = [1.0, 1.0, 1.2, 1.5, 1.8, 2.0, 2.5]; // index = combo (0~6+)
+export const COMBO_WINDOW_MS     = 500;    // 콤보 유지 조건: 0.5초 이내 입력
 
 // 점수 관련
 export const SCORE_BASE          = 100;   // 블럭 1개 기본 점수

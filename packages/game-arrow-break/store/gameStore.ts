@@ -8,7 +8,7 @@ import {
   QUEUE_SIZE, MAX_ENERGY,
   ENERGY_DECAY_BASE,
   ENERGY_GAIN_BASE, ENERGY_GAIN_COMBO, ENERGY_GAIN_CAP,
-  ENERGY_WRONG, COMBO_MULTIPLIERS, SCORE_BASE,
+  ENERGY_WRONG, COMBO_MULTIPLIERS, SCORE_BASE, COMBO_WINDOW_MS,
 } from '../constants/game';
 
 export type GameStatus = 'idle' | 'countdown' | 'playing' | 'over';
@@ -41,34 +41,35 @@ function getComboMultiplier(combo: number): number {
 }
 
 const IDLE_STATE = {
-  status:     'idle' as GameStatus,
-  score:      0,
-  level:      1,
-  energy:     MAX_ENERGY,
-  combo:      0,
-  countdown:  3,
-  lastAction: null as LastAction,
-  actionSeq:  0,
+  status:        'idle' as GameStatus,
+  score:         0,
+  level:         1,
+  energy:        MAX_ENERGY,
+  combo:         0,
+  countdown:     3,
+  lastAction:    null as LastAction,
+  actionSeq:     0,
+  lastBlockTime: 0,   // 현재 타겟 블록이 나타난 시각 (ms)
 };
 
 interface GameState {
-  queue:      BlockItem[];
-  level:      number;
-  energy:     number;
-  score:      number;
-  combo:      number;
-  status:     GameStatus;
-  countdown:  number;
-  lastAction: LastAction;
-  actionSeq:  number;
-  bestScore:  number;
+  queue:         BlockItem[];
+  level:         number;
+  energy:        number;
+  score:         number;
+  combo:         number;
+  status:        GameStatus;
+  countdown:     number;
+  lastAction:    LastAction;
+  actionSeq:     number;
+  bestScore:     number;
+  lastBlockTime: number;
 
   startCountdown: () => void;
   countdownTick:  () => void;
   pressDirection: (dir: Direction) => void;
   energyTick:     () => void;
   levelTick:      () => void;
-  // goHome: idle 상태로 리셋 (허브 복귀 / standalone 홈 화면)
   goHome:         () => void;
 }
 
@@ -83,35 +84,39 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   countdownTick: () => {
     const { countdown } = get();
-    if (countdown <= 1) set({ status: 'playing', countdown: 0 });
+    if (countdown <= 1) set({ status: 'playing', countdown: 0, lastBlockTime: Date.now() });
     else                set({ countdown: countdown - 1 });
   },
 
   pressDirection: (dir: Direction) => {
-    const { status, queue, energy, score, combo, bestScore, actionSeq } = get();
+    const { status, queue, energy, score, combo, bestScore, actionSeq, lastBlockTime } = get();
     if (status !== 'playing') return;
 
     const correct = judgeInput(queue, dir);
 
     if (correct) {
-      const newCombo   = combo + 1;
-      const multiplier = getComboMultiplier(newCombo);
-      const gained     = Math.floor(SCORE_BASE * get().level * multiplier);
-      const energyGain = Math.min(ENERGY_GAIN_BASE + newCombo * ENERGY_GAIN_COMBO, ENERGY_GAIN_CAP);
-      const newEnergy  = Math.min(energy + energyGain, MAX_ENERGY);
-      const newScore   = score + gained;
-      const newBest    = Math.max(bestScore, newScore);
+      const now         = Date.now();
+      const inWindow    = lastBlockTime > 0 && (now - lastBlockTime) <= COMBO_WINDOW_MS;
+      // 0.5초 이내 입력 시 콤보 유지, 초과 시 콤보 리셋
+      const newCombo    = inWindow ? combo + 1 : 1;
+      const multiplier  = getComboMultiplier(newCombo);
+      const gained      = Math.floor(SCORE_BASE * get().level * multiplier);
+      const energyGain  = Math.min(ENERGY_GAIN_BASE + newCombo * ENERGY_GAIN_COMBO, ENERGY_GAIN_CAP);
+      const newEnergy   = Math.min(energy + energyGain, MAX_ENERGY);
+      const newScore    = score + gained;
+      const newBest     = Math.max(bestScore, newScore);
 
       if (newBest > bestScore) saveBest(newBest);
 
       set({
-        queue:      popAndPush(queue),
-        combo:      newCombo,
-        energy:     newEnergy,
-        score:      newScore,
-        bestScore:  newBest,
-        lastAction: 'correct',
-        actionSeq:  actionSeq + 1,
+        queue:         popAndPush(queue),
+        combo:         newCombo,
+        energy:        newEnergy,
+        score:         newScore,
+        bestScore:     newBest,
+        lastAction:    'correct',
+        actionSeq:     actionSeq + 1,
+        lastBlockTime: now,   // 다음 타겟 블록 타이머 시작
       });
     } else {
       const newEnergy = Math.max(energy - ENERGY_WRONG, 0);
