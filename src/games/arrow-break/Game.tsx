@@ -128,13 +128,20 @@ export default function GameArrowBreak() {
   }
 
   return (
-    <View nativeID="arrow-break-game" style={[styles.container, { paddingTop: Math.max(16, insets.top), paddingBottom: Math.max(16, insets.bottom) }]}>
-      <HUD />
-      <View style={styles.energyWrap}><EnergyBar /></View>
+    <View nativeID="arrow-break-game" style={[styles.container, { paddingTop: Math.max(12, insets.top), paddingBottom: Math.max(12, insets.bottom) }]}>
+      {/* 상단 고정 영역 */}
+      <View style={styles.topSection}>
+        <HUD />
+        <View style={styles.energyWrap}><EnergyBar /></View>
+      </View>
+
+      {/* 중간: 남은 공간 차지, 넘쳐도 클립 */}
       <View style={styles.laneWrap}>
         <ComboPopup />
         <BlockLane queue={queue} />
       </View>
+
+      {/* 하단 고정: 항상 보임 */}
       <DirectionPad activeDir={activeDir} onPress={handleInput} />
 
       <GameOverlay
@@ -176,7 +183,8 @@ const styles = StyleSheet.create({
   startText:  { fontSize: 20, fontWeight: '900', color: '#fff', letterSpacing: 3 },
   rankLink:   { paddingVertical: 8 },
   rankLinkText:{ fontSize: 14, color: COLORS.subText, fontWeight: '600' },
-  container:  { flex: 1, backgroundColor: COLORS.background, alignItems: 'center', justifyContent: 'center', paddingTop: 16, paddingBottom: 16, paddingHorizontal: 24 },
-  energyWrap: { width: '100%', marginTop: 12, marginBottom: 16 },
-  laneWrap:   { alignItems: 'center', marginBottom: 28 },
+  container:   { flex: 1, backgroundColor: COLORS.background, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 24 },
+  topSection:  { width: '100%' },
+  energyWrap:  { width: '100%', marginTop: 8, marginBottom: 4 },
+  laneWrap:    { flex: 1, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', paddingVertical: 8 },
 });

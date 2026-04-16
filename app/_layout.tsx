@@ -9,13 +9,14 @@ export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
-    // 브라우저 주소창·하단 네비바를 제외한 실제 visible 높이로 고정
+    // visualViewport: 주소창 + 하단 플로팅 바까지 모두 제외한 정확한 visible 높이
     const setHeight = () => {
-      const h = `${window.innerHeight}px`;
+      const h = `${window.visualViewport?.height ?? window.innerHeight}px`;
       document.documentElement.style.height = h;
       document.body.style.height = h;
     };
     setHeight();
+    window.visualViewport?.addEventListener('resize', setHeight);
     window.addEventListener('resize', setHeight);
 
     // 스크롤·오버스크롤 비활성화 (touch-action 은 설정 안 함 → 터치 이벤트 정상 동작)
@@ -31,6 +32,7 @@ export default function RootLayout() {
     document.addEventListener('touchmove', blockScroll, { passive: false });
 
     return () => {
+      window.visualViewport?.removeEventListener('resize', setHeight);
       window.removeEventListener('resize', setHeight);
       document.removeEventListener('touchmove', blockScroll);
     };

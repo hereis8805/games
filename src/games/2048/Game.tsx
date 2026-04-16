@@ -185,7 +185,7 @@ export default function Game2048() {
 }
 
 const styles = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: COLORS.background, alignItems: 'center', justifyContent: 'center', paddingTop: 16, paddingBottom: 16 },
+  container:  { flex: 1, backgroundColor: COLORS.background, alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12 },
   overlay:    { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.55)', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   card:       { width: 300, backgroundColor: COLORS.background, borderRadius: 24, padding: 28, alignItems: 'center' },
   overTitle:  { fontSize: 28, fontWeight: '900', color: COLORS.text, letterSpacing: 2, marginBottom: 8 },

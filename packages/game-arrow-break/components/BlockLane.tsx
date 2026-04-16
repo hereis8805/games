@@ -66,12 +66,8 @@ export default function BlockLane({ queue }: Props) {
         </Animated.View>
       ))}
 
-      {/* ── 타겟 구분선 ── */}
-      <View style={styles.divider}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>지금 이 방향!</Text>
-        <View style={styles.dividerLine} />
-      </View>
+      {/* 타겟 구분 여백 */}
+      <View style={styles.dividerGap} />
 
       {/* 타겟 블록 */}
       {targetBlock && (
@@ -112,25 +108,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
 
-  // 구분선
-  divider: {
-    flexDirection: 'row',
-    alignItems:    'center',
-    width:         '100%',
-    gap:           8,
-    marginVertical: 4,
-    zIndex:        2,
-  },
-  dividerLine: {
-    flex:            1,
-    height:          1,
-    backgroundColor: 'rgba(233,69,96,0.5)',
-  },
-  dividerText: {
-    fontSize:      11,
-    fontWeight:    '700',
-    color:         '#e94560',
-    letterSpacing: 0.5,
+  dividerGap: {
+    height: 6,
+    zIndex: 2,
   },
 
   // 타겟 블록 영역

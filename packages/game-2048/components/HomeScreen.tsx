@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import { COLORS } from '../constants/theme';
 
@@ -62,13 +63,18 @@ export default function HomeScreen({ onPlay, onLeaderboard, bestScore, onBack }:
   const TILE_SIZE = Math.min(width * 0.14, 64);
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.outer, { opacity: fadeAnim }]}>
       {/* 허브 뒤로가기 버튼 */}
       {onBack && (
         <TouchableOpacity style={styles.backBtn} onPress={onBack}>
           <Text style={styles.backText}>← 허브</Text>
         </TouchableOpacity>
       )}
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
 
       {/* 타이틀 */}
       <Animated.View style={{ transform: [{ translateY: slideAnim }, { scale: scaleAnim }] }}>
@@ -137,6 +143,7 @@ export default function HomeScreen({ onPlay, onLeaderboard, bestScore, onBack }:
           <HowtoItem icon="✨" label="2048 달성!" />
         </View>
       </Animated.View>
+      </ScrollView>
     </Animated.View>
   );
 }
@@ -151,20 +158,26 @@ function HowtoItem({ icon, label }: { icon: string; label: string }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outer: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  scroll: {
+    flex: 1,
+  },
+  container: {
     alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 40,
-    gap: 28,
+    paddingTop: 56,   // backBtn 공간
+    paddingBottom: 32,
+    gap: 24,
   },
   backBtn: {
     position: 'absolute',
     top: 16,
     left: 20,
     padding: 8,
+    zIndex: 10,
   },
   backText: {
     fontSize: 14,
