@@ -1,18 +1,22 @@
 import React from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { useGameStore } from '../store/gameStore';
-import { DIFFICULTY_LEVELS, BOARD_MAX_WIDTH, BLOCK_GAP } from '../constants/game';
+import { BOARD_MAX_WIDTH, BLOCK_GAP } from '../constants/game';
 import Block from './Block';
 
 export default function GameBoard() {
   const blocks     = useGameStore(s => s.blocks);
   const diffIdx    = useGameStore(s => s.diffIdx);
   const tappedSet  = useGameStore(s => s.tappedSet);
-  const wrongTapped= useGameStore(s => s.wrongTapped);
+  const wrongTapped = useGameStore(s => s.wrongTapped);
+  const roundKey   = useGameStore(s => s.roundKey);
   const { width }  = useWindowDimensions();
 
-  const { gridSize } = DIFFICULTY_LEVELS[diffIdx];
-  const boardWidth   = Math.min(width - 48, BOARD_MAX_WIDTH);
+  // blocks.length 기준으로 gridSize 계산
+  // diffIdx 기준으로 계산하면 diffIdx 업데이트 직후 blocks가 아직 이전 크기일 때
+  // 열 수가 맞지 않아 레이아웃이 깨지는 현상이 생긴다
+  const gridSize   = blocks.length > 0 ? Math.round(Math.sqrt(blocks.length)) : 3;
+  const boardWidth = Math.min(width - 48, BOARD_MAX_WIDTH);
   const blockSize    = Math.floor((boardWidth - BLOCK_GAP * (gridSize - 1)) / gridSize);
 
   const rows = [];
@@ -24,7 +28,7 @@ export default function GameBoard() {
       if (!block) continue;
       row.push(
         <Block
-          key={block.id}
+          key={`${roundKey}-${block.id}`}
           block={block}
           size={blockSize}
           diffIdx={diffIdx}
