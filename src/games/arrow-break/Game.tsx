@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import {
   useGameStore, useKeyboard,
@@ -17,6 +18,12 @@ export default function GameArrowBreak() {
     startCountdown, countdownTick,
     pressDirection, energyTick, levelTick, goHome,
   } = useGameStore();
+
+  // 플랫폼 분기: 웹은 window.innerHeight로 브라우저 크롬 처리, 네이티브는 기기 safe area 사용
+  const rawInsets = useSafeAreaInsets();
+  const insets = Platform.OS === 'web'
+    ? { top: 0, bottom: 0, left: 0, right: 0 }
+    : rawInsets;
 
   const [activeDir,   setActiveDir]   = useState<Direction | null>(null);
   const [overlay,     setOverlay]     = useState<Overlay>('none');
@@ -88,8 +95,8 @@ export default function GameArrowBreak() {
 
   if (status === 'idle') {
     return (
-      <View style={styles.idleScreen}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+      <View style={[styles.idleScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <TouchableOpacity style={[styles.backBtn, { top: 16 + insets.top }]} onPress={() => router.back()}>
           <Text style={styles.backText}>← 허브</Text>
         </TouchableOpacity>
         <Text style={styles.idleTitle}>ARROW</Text>
@@ -121,7 +128,7 @@ export default function GameArrowBreak() {
   }
 
   return (
-    <View nativeID="arrow-break-game" style={styles.container}>
+    <View nativeID="arrow-break-game" style={[styles.container, { paddingTop: Math.max(16, insets.top), paddingBottom: Math.max(16, insets.bottom) }]}>
       <HUD />
       <View style={styles.energyWrap}><EnergyBar /></View>
       <View style={styles.laneWrap}>

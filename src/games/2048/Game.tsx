@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Animated, {
   useSharedValue, useAnimatedStyle, withSpring, FadeIn,
@@ -70,6 +71,13 @@ function GameOverCard({
 // ── 메인 ────────────────────────────────────────────────────────────────────
 export default function Game2048() {
   const { board, score, bestScore, status, move, startGame, continueAfterWin, goHome, _initBest } = useGameStore();
+
+  // 플랫폼 분기: 웹은 window.innerHeight로 브라우저 크롬 처리, 네이티브는 기기 safe area 사용
+  const rawInsets = useSafeAreaInsets();
+  const insets = Platform.OS === 'web'
+    ? { top: 0, bottom: 0, left: 0, right: 0 }
+    : rawInsets;
+
   const [winSeen,     setWinSeen]     = useState(false);
   const [activeDir,   setActiveDir]   = useState<Direction | null>(null);
   const [overlay,     setOverlay]     = useState<Overlay>('none');
@@ -110,7 +118,7 @@ export default function Game2048() {
   // ── idle 시작 화면 ──────────────────────────────────────────────────────
   if (status === 'idle') {
     return (
-      <>
+      <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
         <HomeScreen
           onPlay={startGame}
           onLeaderboard={() => setOverlay('leaderboard')}
@@ -120,13 +128,13 @@ export default function Game2048() {
         {overlay === 'leaderboard' && (
           <Leaderboard onClose={() => setOverlay('none')} />
         )}
-      </>
+      </View>
     );
   }
 
   // ── 게임 화면 ───────────────────────────────────────────────────────────
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: Math.max(16, insets.top), paddingBottom: Math.max(16, insets.bottom) }]}>
       <ScoreBar
         score={score}
         bestScore={bestScore}
