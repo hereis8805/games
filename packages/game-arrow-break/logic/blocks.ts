@@ -8,10 +8,10 @@ export interface BlockItem {
 export const DIRECTIONS: Direction[] = ['up', 'down', 'left', 'right'];
 
 export const DIRECTION_LABEL: Record<Direction, string> = {
-  up:    '▲',
-  down:  '▼',
-  left:  '◀',
-  right: '▶',
+  up:    '⬆',
+  down:  '⬇',
+  left:  '⬅',
+  right: '➡',
 };
 
 let _nextId = 1;

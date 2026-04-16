@@ -46,8 +46,9 @@ function ArrowButton({
     <Animated.View style={animStyle}>
       <TouchableOpacity
         style={[styles.btn, isActive && styles.btnActive]}
-        onPress={() => onPress(dir)}
-        activeOpacity={0.7}
+        onPressIn={() => onPress(dir)}
+        activeOpacity={0.6}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         <Text style={[styles.arrow, isActive && styles.arrowActive]}>
           {DIRECTION_LABEL[dir]}
@@ -72,7 +73,7 @@ export default function DirectionPad({ activeDir, onPress }: DirectionPadProps) 
   );
 }
 
-const BTN = 60;
+const BTN = 68;
 
 const styles = StyleSheet.create({
   pad: {

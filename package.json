@@ -7,6 +7,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@game/2048": "*",
+    "@game/arrow-break": "*",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~54.0.33",
     "expo-constants": "~17.0.8",
@@ -29,6 +31,9 @@
     "typescript": "~5.9.2"
   },
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "overrides": {
     "react": "19.1.0",
     "react-dom": "19.1.0"

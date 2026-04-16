@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { COLORS } from '../constants/theme';
 
 interface ScoreBarProps {
-  score: number;
-  bestScore: number;
-  onNewGame: () => void;
+  score:         number;
+  bestScore:     number;
+  onNewGame:     () => void;
   onLeaderboard: () => void;
-  onBack?: () => void;
+  onBack?:       () => void;   // 허브: 허브 메인 / standalone: 홈 화면
 }
 
 export default function ScoreBar({ score, bestScore, onNewGame, onLeaderboard, onBack }: ScoreBarProps) {
@@ -29,7 +29,7 @@ export default function ScoreBar({ score, bestScore, onNewGame, onLeaderboard, o
       </View>
       <View style={styles.actionRow}>
         <TouchableOpacity style={styles.rankBtn} onPress={onLeaderboard}>
-          <Text style={styles.rankText}>🏆 랭킹.</Text>
+          <Text style={styles.rankText}>🏆 랭킹</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={onNewGame}>
           <Text style={styles.buttonText}>New Game</Text>
@@ -58,28 +58,28 @@ const styles = StyleSheet.create({
   scores:     { flexDirection: 'row', gap: 8 },
   scoreBox: {
     backgroundColor: COLORS.scoreBox,
-    borderRadius: 6,
+    borderRadius:    6,
     paddingHorizontal: 14,
-    paddingVertical: 6,
-    alignItems: 'center',
-    minWidth: 70,
+    paddingVertical:   6,
+    alignItems:      'center',
+    minWidth:        70,
   },
   scoreLabel: { fontSize: 11, fontWeight: '700', color: COLORS.scoreText, letterSpacing: 1 },
   scoreValue: { fontSize: 20, fontWeight: '800', color: COLORS.scoreText },
   actionRow:  { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
   rankBtn: {
     paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: COLORS.board,
+    paddingVertical:   8,
+    borderRadius:      6,
+    borderWidth:       2,
+    borderColor:       COLORS.board,
   },
   rankText:   { color: COLORS.text, fontWeight: '700', fontSize: 14 },
   button: {
-    backgroundColor: COLORS.button,
+    backgroundColor:   COLORS.button,
     paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 6,
+    paddingVertical:   8,
+    borderRadius:      6,
   },
   buttonText: { color: COLORS.buttonText, fontWeight: '700', fontSize: 14 },
 });

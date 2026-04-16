@@ -9,7 +9,6 @@ import { COLORS } from '../constants/theme';
 interface Props {
   highlightId?: string;
   onClose:      () => void;
-  onHome?:      () => void;
 }
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -19,7 +18,7 @@ function formatDate(iso: string) {
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 
-export default function Leaderboard({ highlightId, onClose, onHome }: Props) {
+export default function Leaderboard({ highlightId, onClose }: Props) {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState('');
@@ -66,13 +65,6 @@ export default function Leaderboard({ highlightId, onClose, onHome }: Props) {
     <View style={styles.container}>
       {/* 헤더 */}
       <View style={styles.header}>
-        {onHome ? (
-          <TouchableOpacity onPress={onHome} style={styles.closeBtn}>
-            <Text style={styles.hubText}>홈</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.closeBtn} />
-        )}
         <Text style={styles.title}>글로벌 랭킹</Text>
         <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
           <Text style={styles.closeText}>✕</Text>
@@ -242,11 +234,6 @@ const styles = StyleSheet.create({
   refreshText: {
     color:      COLORS.subText,
     fontSize:   14,
-    fontWeight: '600',
-  },
-  hubText: {
-    fontSize:   14,
-    color:      COLORS.subText,
     fontWeight: '600',
   },
 });

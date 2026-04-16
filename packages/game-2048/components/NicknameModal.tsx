@@ -101,11 +101,11 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     backgroundColor: '#fff',
   },
-  error:      { fontSize: 12, color: '#e74c3c', alignSelf: 'flex-start' },
-  btnRow:     { flexDirection: 'row', gap: 10, width: '100%', marginTop: 4 },
+  error:  { fontSize: 12, color: '#e74c3c', alignSelf: 'flex-start' },
+  btnRow: { flexDirection: 'row', gap: 10, width: '100%', marginTop: 4 },
   skipBtn: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 13,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: COLORS.board,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   skipText:   { color: COLORS.subText, fontWeight: '700' },
   submitBtn: {
     flex: 2,
-    paddingVertical: 12,
+    paddingVertical: 13,
     borderRadius: 8,
     backgroundColor: '#f65e3b',
     alignItems: 'center',
