@@ -6,8 +6,9 @@ import Animated, {
   withSequence,
   withTiming,
   FadeIn,
-  ZoomOut,
+  FadeOut,
   LinearTransition,
+  Keyframe,
 } from 'react-native-reanimated';
 import { BlockItem } from '../logic/blocks';
 import { useGameStore } from '../store/gameStore';
@@ -17,6 +18,22 @@ import ArrowBlock from './ArrowBlock';
 interface Props {
   queue: BlockItem[];
 }
+
+// 타겟 블록 제거: 살짝 부풀었다가 사라짐 (정답 느낌)
+const TargetPopOut = new Keyframe({
+  0:   { opacity: 1, transform: [{ scale: 1    }] },
+  25:  { opacity: 1, transform: [{ scale: 1.18 }] },
+  100: { opacity: 0, transform: [{ scale: 0.4  }] },
+}).duration(220);
+
+// 대기 블록 제거 (일반)
+const QueueFadeOut = FadeOut.duration(120);
+
+// 새 블록 등장: 위에서 자연스럽게 나타남
+const BlockEnter = FadeIn.duration(200).delay(80);
+
+// 블록 위치 이동: 스프링 감각
+const BlockShift = LinearTransition.springify().damping(18).stiffness(200);
 
 export default function BlockLane({ queue }: Props) {
   const actionSeq  = useGameStore(s => s.actionSeq);
@@ -45,8 +62,8 @@ export default function BlockLane({ queue }: Props) {
   const laneStyle  = useAnimatedStyle(() => ({ transform: [{ translateX: shakeX.value }] }));
   const flashStyle = useAnimatedStyle(() => ({ opacity: bgOpacity.value }));
 
-  const queueBlocks  = queue.slice(0, -1); // 위에 쌓이는 대기 블록
-  const targetBlock  = queue[queue.length - 1]; // 맨 아래 타겟
+  const queueBlocks = queue.slice(0, -1);
+  const targetBlock = queue[queue.length - 1];
 
   return (
     <Animated.View style={[styles.lane, laneStyle]}>
@@ -57,9 +74,9 @@ export default function BlockLane({ queue }: Props) {
       {queueBlocks.map(item => (
         <Animated.View
           key={item.id}
-          entering={FadeIn.duration(150)}
-          exiting={ZoomOut.duration(220)}
-          layout={LinearTransition.duration(160)}
+          entering={BlockEnter}
+          exiting={QueueFadeOut}
+          layout={BlockShift}
           style={styles.blockWrapper}
         >
           <ArrowBlock item={item} isTarget={false} />
@@ -73,13 +90,12 @@ export default function BlockLane({ queue }: Props) {
       {targetBlock && (
         <Animated.View
           key={targetBlock.id}
-          entering={FadeIn.duration(150)}
-          exiting={ZoomOut.duration(220)}
-          layout={LinearTransition.duration(160)}
+          entering={BlockEnter}
+          exiting={TargetPopOut}
+          layout={BlockShift}
           style={styles.targetWrapper}
         >
           <ArrowBlock item={targetBlock} isTarget={true} />
-          {/* 아래 방향 힌트 화살표 */}
           <Text style={styles.downHint}>▼</Text>
         </Animated.View>
       )}
@@ -89,14 +105,14 @@ export default function BlockLane({ queue }: Props) {
 
 const styles = StyleSheet.create({
   lane: {
-    alignItems:       'center',
-    gap:              BLOCK_GAP,
-    paddingTop:       16,
-    paddingBottom:    12,
+    alignItems:        'center',
+    gap:               BLOCK_GAP,
+    paddingTop:        16,
+    paddingBottom:     12,
     paddingHorizontal: 24,
-    backgroundColor:  COLORS.lane,
-    borderRadius:     20,
-    overflow:         'hidden',
+    backgroundColor:   COLORS.lane,
+    borderRadius:      20,
+    overflow:          'hidden',
   },
   flash: {
     ...StyleSheet.absoluteFillObject,
@@ -107,21 +123,18 @@ const styles = StyleSheet.create({
   blockWrapper: {
     zIndex: 2,
   },
-
   dividerGap: {
     height: 6,
     zIndex: 2,
   },
-
-  // 타겟 블록 영역
   targetWrapper: {
     alignItems: 'center',
     gap:        4,
     zIndex:     2,
   },
   downHint: {
-    fontSize:  12,
-    color:     'rgba(233,69,96,0.6)',
+    fontSize:   12,
+    color:      'rgba(233,69,96,0.6)',
     lineHeight: 14,
   },
 });
